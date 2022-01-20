@@ -35,6 +35,7 @@ def prepare_settings():
                         type=str2bool, const=True, dest="include_blunder", nargs="?",
                         help="If False then generated puzzles won't include initial blunder move")
     parser.add_argument("--stockfish", metavar="STOCKFISH", default=None, help="Path to Stockfish binary")
+    parser.add_argument("--output", default=None, help="Path to output PGN file")
 
     return parser.parse_args()
 
@@ -51,7 +52,7 @@ engine = chess.engine.SimpleEngine.popen_uci(stockfish_command)
 engine.configure({'Threads': settings.threads, 'Hash': settings.memory})
 
 all_games = open(settings.games, "r")
-tactics_file = open("tactics.pgn", "w")
+tactics_file = open(settings.output, "w")
 game_id = 0
 while True:
     game = chess.pgn.read_game(all_games)
